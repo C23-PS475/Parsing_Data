@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Lansitec</title>
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
+  <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="gambar/icon.png" />
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
+</head>
+<body className='snippet-body'>
+  <body id="body-pd">
+    <header class="header" id="header">
+      <div class="header_toggle ml-auto">
+        <i class='bx bx-menu' id="header-toggle"></i> 
+      </div>
+    </header>
+    <div class="l-navbar" id="nav-bar" style="height: 1000px;">
+      <nav class="nav">
+        <div> 
+          <a href="t3.html" class="nav_logo"> 
+            <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Parsing Data</span> 
+          </a>
+          <div class="nav_list"> 
+            <a href = "indowave.html" class="nav_link"> 
+              <i class='bx bx-grid-alt nav_icon'></i> 
+              <span class="nav_name">Smart Water Meter <i class='bx bxs-chevron-down arrow'></i></span> 
+            </a> 
+            <div class="sub_menu">
+              <a href="indowave.html" class="nav_link">indowave</a>
+              <a href="t3.html" class="nav_link">T3</a>
+              <a href="altek.html" class="nav_link">Altek</a>
+            </div>
+          </div>
+          <a href="lansitec.html" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Lansitec</span> </a>  
+          <a href="milesight.html" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Milesight</span> </a>
+          <a href="swmultra.html" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Wiracyble SWM</span> </a>  
+          <a href="swlevel.html" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Smart Water Level</span> </a>
+          <a href="barindo.html" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Barindo SWM</span></a>
+        </div> 
+      </nav>
+    </div>
+    <!--Container Main start-->
+    <div class="height-100 ">
+      <div class="container">
+        <div class="d-flex justify-content-center">
+          <img src="gambar/lansitec.png" alt="logo retrofit" style="width: 500px; height: 300px;">
+        </div>
+        <h1 class="text-center">
+          <b>Smart Tracker Lansitec</b>
+        </h1>
+        <form id="formPengisianData">
+          <div class="form-group">
+            <label for="payload" >
+              <b>Payload:</b>
+            </label>
+            <input type="text" class="form-control" id="payload" name="payload" required>
+          </div>
+          <br>
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" onclick="tampilkandatalansitec()">Tampilkan Data</button>
+            <button type="button" class="btn btn-primary" style="margin-left: 15px;" onclick="tampilkanFormDownlink()">Downlink</button>
+            <button type="button" class="btn btn-primary" style="margin-left: 15px;" onclick="hapus()">Hapus</button>
+          </div>
+          <div class="d-flex justify-content-center">
+          <h6 id="Tracker" style="display: none; color: #004794;margin-top: 10px;"><b>Tracker Configuration</b></h6>
+        </div>
+          <div id="heartbeat-container" class="form-group">
+            <label for="heartbeat">
+              <b>Heartbeat:</b>
+            </label>
+            <input type="text" class="form-control" id="heartbeat" name="heartbeat" placeholder="minutes">
+          </div>
+          <div id="BLEPRI-container" class="form-group">
+          <label for="BLEPRI">
+            <b>BLEPRI:</b>
+          </label>
+          <input type="text" class="form-control" id="BLEPRI" name="BLEPRI" placeholder="minutes">
+        </div>
+          <div id="Mode-container" class="form-group">
+            <label for="Mode">
+              <b>Mode:</b>
+            </label>
+            <input type="text" class="form-control" id="mode" name="mode" placeholder="0: Period 1: Autonomous 2: On-Demand">
+          </div>
+          <div id="POS-container" class="form-group">
+            <label for="POS">
+              <b>POS:</b>
+            </label>
+            <input type="text" class="form-control" id="POS" name="POS" placeholder="minutes">
+          </div>
+          <div id="UUID-container" class="form-group">
+            <label for="UUID">
+              <b>Bluetooth UUID:</b>
+            </label>
+            <input type="text" class="form-control" id="UUID" name="UUID">
+          </div>
+          <div class="d-flex justify-content-center">
+          <h6 id="Asset_beacon" style="display: none; color: #004794;margin-top: 10px;"><b>Asset Beacon Configuration</b></h6>
+        </div>
+          <div id="Beacon-Period-container" class="form-group">
+            <label for="Beacon_period">
+              <b>Asset Beacon Report Period:</b>
+            </label>
+            <input type="text" class="form-control" id="Beacon_period" name="Beacon_period" placeholder="minutes">
+          </div>
+          <div id="Bluetooth-receiving-container" class="form-group">
+            <label for="Bluetooth_period">
+              <b>Bluetooth Receiving Duration:</b>
+            </label>
+            <input type="text" class="form-control" id="Bluetooth_period" name="Bluetooth_period" placeholder="second">
+          </div>
+          <div id="Asset-Report-container" class="form-group">
+            <label for="Asset_Report">
+              <b>Asset Report Period:</b>
+            </label>
+            <input type="text" class="form-control" id="Asset_Report" name="Asset_Report" placeholder="minutes">
+          </div>
+          <div id="Asset-UUID-container" class="form-group">
+            <label for="Asset_UUID">
+              <b>Asset UUID:</b>
+            </label>
+            <input type="text" class="form-control" id="Asset_UUID" name="Asset_UUID">
+          </div>
+          <div class="d-flex justify-content-center">
+            <button type="button" id="btn_hasil" class="btn btn-primary" style="display: none; margin-top: 10px;" onclick="tampilkanhasil()">Hasil</button>
+            <button type="button" id="btn_kembali" class="btn btn-primary" style="display: none; margin-top: 10px; margin-left: 15px;" onclick="kembali()">Kembali</button>
+        </div>
+        </form>      
+        <div id="hasilData"></div>
+      </div>
+      <div id="map" style="width: 970px; height: 500px; margin-top: 20px; margin-bottom: 20px;"></div>
+      <br>
+    </div>
+    <!--Container Main end-->
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/tampildata.js"></script>
+    <script type='text/javascript'>
+      document.addEventListener("DOMContentLoaded", function(event) {
+        const showNavbar = (toggleId, navId, bodyId, headerId) =>{
+          const toggle = document.getElementById(toggleId),
+          nav = document.getElementById(navId),
+          bodypd = document.getElementById(bodyId),
+          headerpd = document.getElementById(headerId);
+
+          if(toggle && nav && bodypd && headerpd){
+            toggle.addEventListener('click', ()=>{
+              nav.classList.toggle('show');
+              toggle.classList.toggle('bx-x');
+              bodypd.classList.toggle('body-pd');
+              headerpd.classList.toggle('body-pd');
+            });
+          }
+        }
+
+        showNavbar('header-toggle','nav-bar','body-pd','header')
+
+        const linkColor = document.querySelectorAll('.nav_link')
+
+        function colorLink(){
+          if(linkColor){
+            linkColor.forEach(l=> l.classList.remove('active'))
+            this.classList.add('active')
+          }
+        }
+        linkColor.forEach(l=> l.addEventListener('click', colorLink));
+      });
+    </script>
+    
+    <script type="text/javascript">
+     $(document).ready(function() {
+  $('.nav_link.active').click(function() {
+    $(this).next('.sub_menu').slideToggle();
+    $(this).find('.arrow').toggleClass('bx-rotate-90'); // Menambahkan kelas bx-rotate-180
+  });
+});
+    </script>
+  </body>
+</html>
