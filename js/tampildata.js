@@ -529,7 +529,7 @@ let counter = 0;
               // Jika data ditemukan, buat marker dan tampilkan di peta
               let marker = L.marker([depoData.latitude, depoData.longitude]).addTo(map)
                   .bindPopup(`
-                      <p>Nama Depo:</b> ${depoData.Nama_Depo}<br>
+                      <b>Nama Depo:</b> ${depoData.Nama_Depo}<br>
                       <b>Zona:</b> ${depoData.zona}<br>
                       <b>Latitude:</b> ${depoData.latitude}<br>
                       <b>Longitude:</b> ${depoData.longitude}<br>
