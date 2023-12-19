@@ -446,6 +446,8 @@ function hexToFloat(hex) {
 
 let data_Maj = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126.127, 128, 129, 130]
 
+let markers = [];
+let counter = 0;
  // Variabel untuk menampung hasil parsing
  let result = '';
 
@@ -483,6 +485,17 @@ let data_Maj = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
 
          x = y;
          y = y + 4;
+
+        // Membuat penanda untuk koordinat GPS
+        let marker = L.marker([data_latitude, data_longitude]).addTo(map)
+            .bindPopup(`
+                <b>Latitude:</b> ${data_latitude}<br>
+                <b>Longitude:</b> ${data_longitude}<br>
+                <b>Data ke-${counter + 1}</b>
+            `);
+         markers.push(marker);
+         counter++;
+
      } else if (jenis_data == "BLE") {
          let get_data1 = payload4.slice(x, y);
          major = parseInt(get_data1, 16);
@@ -499,8 +512,41 @@ let data_Maj = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
 
          x = y;
          y = y + 4;
-     }
+         // Kirim data major dan minor ke server
+        fetch('https://header-8.vercel.app/receivedata', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;ty=4',
+              'Accept': 'application/json'
+          },
+          body: JSON.stringify({ major, minor }) // Mengirim data major dan minor
+      })
+      .then(response => response.json())
+      .then(data => {
+          const depoData = data.data[0];
 
+          if (depoData) {
+              // Jika data ditemukan, buat marker dan tampilkan di peta
+              let marker = L.marker([depoData.latitude, depoData.longitude]).addTo(map)
+                  .bindPopup(`
+                      <p>Nama Depo:</b> ${depoData.Nama_Depo}<br>
+                      <b>Zona:</b> ${depoData.zona}<br>
+                      <b>Latitude:</b> ${depoData.latitude}<br>
+                      <b>Longitude:</b> ${depoData.longitude}<br>
+                  `);
+              markers.push(marker);
+              counter++;
+
+              if (markers.length > 0) {
+                  const group = L.featureGroup(markers);
+                  map.fitBounds(group.getBounds());
+              }
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      }); 
+     }
       // Menambahkan hasil parsing ke dalam variabel 'result' hanya jika jenis datanya sesuai
       if ((jenis_data === "GPS")) {
         result += `
@@ -509,17 +555,19 @@ let data_Maj = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
             <p>Latitude: ${data_latitude}</p>
             <p>UTC Time: ${utcTime}</p>
         `;
- }    else if ((jenis_data === "BLE")){
+      }else if ((jenis_data === "BLE")){
       result += `
       <p>Jenis Data: ${jenis_data}</p>
        <p>Major: ${major}</p>
        <p>Minor: ${minor}</p>
        <p>RSSI: ${RSSI}</p>
 `;
-  }
-  
+  }  
+  if (markers.length > 0) {
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds());
+  }  
 }
- // Menampilkan hasil parsing di dalam elemen HTML dengan ID 'hasilData'
  document.getElementById("hasilData").innerHTML = result;
  }
  
@@ -663,9 +711,9 @@ let data_Maj = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
   value_shock = (50 + data_shock2 * 5)*0.001  
 
   data_shock_detection = payload4.slice(102, 104)
+
   const data_shock_detection2 = parseInt(data_shock_detection, 16)
   value_period = data_shock_detection2 * 30 / 60
-
   interval_GNSSPRI = payload4.slice(104, 108)
   const interval_dsml = parseInt(interval_GNSSPRI, 16)
   value_interval = interval_dsml * 5 / 60
