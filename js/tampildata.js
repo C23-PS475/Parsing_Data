@@ -932,139 +932,64 @@ document.getElementById("hasilData").innerHTML = `
 
 }
 function tampilkandatabarindo(){
-  const msg = document.getElementById("payload").value;
-  const dataStr = msg.substring(106);
-const dataIdentify = dataStr.substring(0, 4);
+  const hexString = document.getElementById("payload").value;
+  reportType = hexString.substring(0, 2);
+  soft = hexString.substring(4, 6);
+  csq =  hexString.substring(6, 8);
+  battery = hexString.substring(8, 10);
+  dateTime = hexString.substring(10, 22);
+  const year = dateTime.substring(10, 12);
+  const month = dateTime.substring(8, 10);
+  const day = dateTime.substring(6, 8);
+  const hour = dateTime.substring(4, 6);
+  const minute = dateTime.substring(2, 4);
+  const second = dateTime.substring(0, 2);
+  const formattedTime = new Date(`20${year}`, month - 1, day, hour, minute, second);
+  const formattedTimeString = formattedTime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-var setCsq, setBattery_dec, setSoft, setHard, formattedDate,
- setStatusOrigin, setProductType, setWaterUnit, setCumulant_dec, setCumulant1_dec, 
- setCumulant2_dec, setCumulant3_dec, setCumulant4_dec, setCumulant5_dec, setCumulant6_dec, 
- setCumulant7_dec, setCumulant8_dec, setCumulant9_dec, setCumulant10_dec, setAlarmOrigin, 
- setAlarmDuration, setDataVersion, setSurplus_dec;
+  cumulative1 = hexString.substring(22, 26);
+  const reversedHexString1 = cumulative1.match(/.{2}/g).reverse().join('');
+  const integerValue1 = parseInt(reversedHexString1, 16);
 
-if (dataIdentify === "901E") {
-    const payload = msg.substring(64);
-    if (payload.length < 180) {
-        console.log("Exception: Valid data length is abnormal");
-        return new Result("Data exception", msg);
-    }
-    dataVersion = payload.substring(204, 206);
-    alarmOrigin = payload.substring(192, 194);
-    if (dataVersion.toUpperCase() === "23") {
-        setDataVersion = dataVersion
-        setCsq = payload.substring(46, 48);
-        const setBattery = payload.substring(48, 50);
-        setBattery_dec = (setBattery/10).toFixed(1);
-        setSoft = payload.substring(50, 52);
-        setHard = payload.substring(52, 54);
-        setAlarmOrigin = alarmOrigin;
-        setAlarmDuration = parseInt(msg.substring(196, 198) + msg.substring(194, 196), 16);
+  cumulative2 = hexString.substring(26, 30);
+  const reversedHexString2 = cumulative2.match(/.{2}/g).reverse().join('');
+  const integerValue2 = parseInt(reversedHexString2, 16);
 
-        //setdevice
-        const setDeviceTime = payload.substring(58, 70);
-        const year = setDeviceTime.substring(10, 14);
-        const year_fix = (20 + year);
-        const month = setDeviceTime.substring(8, 10);
-        const day = setDeviceTime.substring(6, 8);
-        const hour = setDeviceTime.substring(4, 6);
-        const minute = setDeviceTime.substring(2, 4);
-        const second = setDeviceTime.substring(0, 2);
-        const date = new Date(year_fix, month - 1, day, hour, minute, second);
-        const options = { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-        
-        setStatusOrigin = payload.substring(70, 74);
-        setProductType = payload.substring(74, 76);
-        setWaterUnit = payload.substring(76, 78);
+  cumulative3 = hexString.substring(30, 34);
+  const reversedHexString3 = cumulative3.match(/.{2}/g).reverse().join('');
+  const integerValue3 = parseInt(reversedHexString3, 16);
 
-        //setSurplus
-        const setSurplus = payload.substring(86, 94);
-        const setSurplus_mirror = reverseString(setSurplus);
-        setSurplus_dec = parseInt(setSurplus_mirror,16);
+  cumulative4 = hexString.substring(34, 38);
+  const reversedHexString4 = cumulative4.match(/.{2}/g).reverse().join('');
+  const integerValue4 = parseInt(reversedHexString4, 16); 
 
-        //cumulant
-        const setCumulant = payload.substring(78, 86);
-        const setCumulant_mirror = reverseString(setCumulant);
-        setCumulant_dec = parseInt(setCumulant_mirror,16).toFixed(2);
+  cumulative5 = hexString.substring(38, 42);
+  const reversedHexString5 = cumulative5.match(/.{2}/g).reverse().join('');
+  const integerValue5 = parseInt(reversedHexString5, 16);
 
-        //cumulant1
-        const setCumulant1 = payload.substring(94, 102);
-        const setCumulant1_mirror = reverseString(setCumulant1);
-        setCumulant1_dec = parseInt(setCumulant1_mirror,16).toFixed(2);
-
-        //cumulant2
-        const setCumulant2 = payload.substring(102, 110);
-        const setCumulant2_mirror = reverseString(setCumulant2);
-        setCumulant2_dec = parseInt(setCumulant2_mirror,16).toFixed(2);
-
-        //cumulant3
-        const setCumulant3 = payload.substring(110, 118);
-        const setCumulant3_mirror = reverseString(setCumulant3);
-        setCumulant3_dec = parseInt(setCumulant3_mirror,16).toFixed(2);
-
-        //cumulant4
-        const setCumulant4 = payload.substring(118, 126);
-        const setCumulant4_mirror = reverseString(setCumulant4);
-        setCumulant4_dec = parseInt(setCumulant4_mirror,16).toFixed(2);
-
-        //cumulant5
-        const setCumulant5 = payload.substring(126, 134);
-        const setCumulant5_mirror = reverseString(setCumulant5);
-        setCumulant5_dec = parseInt(setCumulant5_mirror,16).toFixed(2);
-
-        //cumulant6
-        const setCumulant6 = payload.substring(134, 142);
-        const setCumulant6_mirror = reverseString(setCumulant6);
-        setCumulant6_dec = parseInt(setCumulant6_mirror,16).toFixed(2);
-
-        //cumulant7
-        const setCumulant7 = payload.substring(142, 150);
-        const setCumulant7_mirror = reverseString(setCumulant7);
-        setCumulant7_dec = parseInt(setCumulant7_mirror,16).toFixed(2);
-
-        //cumulant8
-        const setCumulant8 = payload.substring(158, 166);
-        const setCumulant8_mirror = reverseString(setCumulant8);
-        setCumulant8_dec = parseInt(setCumulant8_mirror,16).toFixed(2);
-
-        //cumulant9
-        const setCumulant9 = payload.substring(150, 158);
-        const setCumulant9_mirror = reverseString(setCumulant9);
-        setCumulant9_dec = parseInt(setCumulant9_mirror,16).toFixed(2);
-
-        //cumulant10
-        const setCumulant10 = payload.substring(166, 174);
-        const setCumulant10_mirror = reverseString(setCumulant10);
-        setCumulant10_dec = parseInt(setCumulant10_mirror,16).toFixed(2);
-
-    }
-  }
+  cumulative6 = hexString.substring(42, 46);
+  const reversedHexString6 = cumulative6.match(/.{2}/g).reverse().join('');
+  const integerValue6 = parseInt(reversedHexString6, 16);
   
+  deviceNo = hexString.substring(62, 76);
+  deviceMac = hexString.substring(76, 84);
+  dataVersion = hexString.substring(84, 86);
 
   document.getElementById("hasilData").innerHTML = `
-    <p>csq : ${setCsq}</p>
-    <p>Battery : ${setBattery_dec}V</p>
-    <p>Soft : ${setSoft}</p>
-    <p>Hard : ${setHard}</p>
-    <p>Device Time : ${formattedDate}</p>
-    <p>Status Origin : ${setStatusOrigin}</p>
-    <p>Product Type : ${setProductType}</p>
-    <p>Water Unit : ${setWaterUnit}</p>
-    <p>cumulant : ${setCumulant_dec}m³</p>
-    <p>cumulant1 : ${setCumulant1_dec}m³</p>
-    <p>cumulant2 : ${setCumulant2_dec}m³</p>
-    <p>cumulant3 : ${setCumulant3_dec}m³</p>
-    <p>cumulant4 : ${setCumulant4_dec}m³</p>
-    <p>cumulant5 : ${setCumulant5_dec}m³</p>
-    <p>cumulant6 : ${setCumulant6_dec}m³</p>        
-    <p>cumulant7 : ${setCumulant7_dec}m³</p>
-    <p>cumulant8 : ${setCumulant8_dec}m³</p>
-    <p>cumulant9 : ${setCumulant9_dec}m³</p>
-    <p>cumulant10 : ${setCumulant10_dec}m³</p>
-    <p>Data Version : ${setDataVersion}</p>
-    <p>Alarm Duration : ${setAlarmDuration}</p>
-    <p>Alarm Origin : ${setAlarmOrigin}</p>
-    <p>Surplus : ${setSurplus_dec}</p>
+    <p>Report Type : ${reportType}</p>
+    <p>Software : ${soft}</p>
+    <p>csq : ${csq}</p>
+    <p>Battery : ${battery / 10} V</p>
+    <p>Date time : ${formattedTimeString}</p>
+    <p>cumulant1 : ${integerValue1}m³</p>
+    <p>cumulant2 : ${integerValue2}m³</p>
+    <p>cumulant3 : ${integerValue3}m³</p>
+    <p>cumulant4 : ${integerValue4}m³</p>
+    <p>cumulant5 : ${integerValue5}m³</p>
+    <p>cumulant6 : ${integerValue6}m³</p>        
+    <p>Data Version : ${dataVersion}</p>
+    <p>Device No : ${deviceNo}</p>
+    <p>deviceMac : ${deviceMac}</p>
   `;
 
 }
