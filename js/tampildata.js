@@ -947,34 +947,18 @@ function tampilkandatabarindo(){
   const formattedTime = new Date(`20${year}`, month - 1, day, hour, minute, second);
   const formattedTimeString = formattedTime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-  cumulative1 = hexString.substring(22, 26);
+  cumulative1 = hexString.substring(22, 30);
   const reversedHexString1 = cumulative1.match(/.{2}/g).reverse().join('');
   const integerValue1 = parseInt(reversedHexString1, 16);
 
-  cumulative2 = hexString.substring(26, 30);
+  cumulative2 = hexString.substring(30, 38);
   const reversedHexString2 = cumulative2.match(/.{2}/g).reverse().join('');
   const integerValue2 = parseInt(reversedHexString2, 16);
 
-  cumulative3 = hexString.substring(30, 34);
-  const reversedHexString3 = cumulative3.match(/.{2}/g).reverse().join('');
-  const integerValue3 = parseInt(reversedHexString3, 16);
-
-  cumulative4 = hexString.substring(34, 38);
-  const reversedHexString4 = cumulative4.match(/.{2}/g).reverse().join('');
-  const integerValue4 = parseInt(reversedHexString4, 16); 
-
-  cumulative5 = hexString.substring(38, 42);
-  const reversedHexString5 = cumulative5.match(/.{2}/g).reverse().join('');
-  const integerValue5 = parseInt(reversedHexString5, 16);
-
-  cumulative6 = hexString.substring(42, 46);
-  const reversedHexString6 = cumulative6.match(/.{2}/g).reverse().join('');
-  const integerValue6 = parseInt(reversedHexString6, 16);
-  
   deviceNo = hexString.substring(62, 76);
   deviceMac = hexString.substring(76, 84);
   dataVersion = hexString.substring(84, 86);
-
+  
   document.getElementById("hasilData").innerHTML = `
     <p>Report Type : ${reportType}</p>
     <p>Software : ${soft}</p>
@@ -982,11 +966,7 @@ function tampilkandatabarindo(){
     <p>Battery : ${battery / 10} V</p>
     <p>Date time : ${formattedTimeString}</p>
     <p>cumulant1 : ${integerValue1}m³</p>
-    <p>cumulant2 : ${integerValue2}m³</p>
-    <p>cumulant3 : ${integerValue3}m³</p>
-    <p>cumulant4 : ${integerValue4}m³</p>
-    <p>cumulant5 : ${integerValue5}m³</p>
-    <p>cumulant6 : ${integerValue6}m³</p>        
+    <p>cumulant2 : ${integerValue2}m³</p>      
     <p>Data Version : ${dataVersion}</p>
     <p>Device No : ${deviceNo}</p>
     <p>deviceMac : ${deviceMac}</p>
