@@ -965,8 +965,8 @@ function tampilkandatabarindo(){
     <p>csq : ${csq}</p>
     <p>Battery : ${battery / 10} V</p>
     <p>Date time : ${formattedTimeString}</p>
-    <p>cumulant1 : ${integerValue1}m³</p>
-    <p>cumulant2 : ${integerValue2}m³</p>      
+    <p>cumulant1 : ${integerValue1}L</p>
+    <p>cumulant2 : ${integerValue2}L</p>      
     <p>Data Version : ${dataVersion}</p>
     <p>Device No : ${deviceNo}</p>
     <p>deviceMac : ${deviceMac}</p>
